@@ -37,6 +37,14 @@ html{
   padding: 20px 2px;
     grid-template-columns: repeat(2, 1fr);
 }
+.grid-three-cols{
+    display: grid;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 20px 2px;
+    grid-template-columns: repeat(3, 1fr);
+}
 
 .image,.form,.contact-image{
     width: auto;
