@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express();
+const router = express.Router(); // ✅ This creates a modular router
 
 const AuthControler = require("../controler/auth-controler");
 const {signupSchema,loginSchema} = require("../validatiors/auth-validator");

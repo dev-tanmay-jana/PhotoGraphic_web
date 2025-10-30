@@ -31,6 +31,8 @@ app.use(express.json());
 app.use("/", auth_router, contact_router, service_router);
 app.use("/admin", admin_router);
 
+app.use("/api/auth", auth_router);
+
 app.use(errormiddlewere);
 
 const startServer = async () => {
