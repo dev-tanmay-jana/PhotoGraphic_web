@@ -44,7 +44,12 @@ const startServer = async () => {
         process.exit(1);
     }
 };
+const isconnected = require("mongoose").connection.readyState;
+if (!isconnected){
+    startServer();
+}else{
+    console.log("Server already connected to database");
+}
 
-startServer();
 
 module.exports = app;
