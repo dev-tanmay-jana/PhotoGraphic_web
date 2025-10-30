@@ -11,6 +11,7 @@ const admin_router = require("./router/admin-route");
 //connect db
 const connectDb = require("./connections/db");
 const errormiddlewere = require("./middlewere/error-middlewere");
+const { is } = require("zod/v4/locales");
 
 
 const app = express();
@@ -33,23 +34,48 @@ app.use("/admin", admin_router);
 
 app.use(errormiddlewere);
 
-const startServer = async () => {
+// const startServer = async () => {
+//     try {
+//         await connectDb();
+//         app.listen(port, () => {
+//             console.log(`Server is running at http://localhost:${port}`);
+//         });
+//     } catch (error) {
+//         console.error("Error starting server:", error);
+//         process.exit(1);
+//     }
+// };
+// const isconnected = require("mongoose").connection.readyState;
+// if (!isconnected){
+//     startServer();
+// }else{
+//     console.log("Server already connected to database");
+// }
+
+const isconnected = require("mongoose").connection.readyState;
+
+async function startServer() {
     try {
-        await connectDb();
-        app.listen(port, () => {
-            console.log(`Server is running at http://localhost:${port}`);
-        });
+        if (!isconnected) {
+            await connectDb();
+        } else {
+            console.log("Server already connected to database");
+        }
+        isconnected= true;
+        console.log(`Server is started`);
     } catch (error) {
         console.error("Error starting server:", error);
-        process.exit(1);
+        // process.exit(1);
     }
 };
-const isconnected = require("mongoose").connection.readyState;
-if (!isconnected){
-    startServer();
-}else{
-    console.log("Server already connected to database");
-}
+
+app.use((req, res, next) => {
+    if (!isconnected) {
+        startServer().then(() => next());
+    } else {
+        next();
+    }
+});
 
 
 module.exports = app;
