@@ -1,12 +1,12 @@
 require("dotenv").config();
 // console.log("MONGO_URI:", process.env.MONGO_URI);
 const express = require("express");
-const cors = require("cors");
+const cross = require("cors");
 //import routes
 const auth_router = require("./router/auth-route");
 const contact_router = require("./router/contact-router");
 const service_router = require("./router/service-route");
-//admin route
+//amdin route
 const admin_router = require("./router/admin-route");
 //connect db
 const connectDb = require("./connections/db");
@@ -24,35 +24,19 @@ const corsOptions = {
 };
 
 //cross origin resource sharing
-app.use(cors(corsOptions));
-//middleware
+app.use(cross(corsOptions));
+//middlewere
 app.use(express.json());
 
 app.use("/", auth_router, contact_router, service_router);
 app.use("/admin", admin_router);
 
-app.use("/api/auth", auth_router);
-
 app.use(errormiddlewere);
 
-const startServer = async () => {
-    try {
-        await connectDb();
-        app.listen(port, () => {
-            console.log(`Server is running at http://localhost:${port}`);
-        });
-    } catch (error) {
-        console.error("Error starting server:", error);
-        process.exit(1);
-    }
-};
-
-const isconnected = require("mongoose").connection.readyState;
-if (!isconnected){
-    startServer();
-}else{
-    console.log("Server already connected to database");
-}
-
+connectDb().then( () =>{
+    app.listen(port, ()=>{
+        console.log(`server started at: http://localhost:${port}`);
+    });
+});
 
 module.exports = app;
