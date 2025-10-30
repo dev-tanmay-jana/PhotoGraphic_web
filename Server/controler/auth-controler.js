@@ -11,19 +11,14 @@ const home = async(req,res) =>{
 };
 
 const signup = async(req,res) =>{
-
     const { username, email, phone, password,isAdmin } = req.body;
-
     try{
-
         const userExits = await User.findOne({ email});
-
         if(userExits){
-            return res.status(400).json({ msg: "Email is already exits"});
+            return res.status(400).json({ message: "Email is already exits"});
         }
-
         const newUser = await User.create({ username, email, phone, password, isAdmin });
-        console.log(newUser);
+        // console.log(newUser);
         res.status(201).json({ user: newUser, token: await newUser.generateToken(),userId: newUser._id.toString(), });
     }
     catch(err){
@@ -36,16 +31,12 @@ const signup = async(req,res) =>{
 const login = async (req,res) =>{
     try {
         const { email,password} = req.body;
-
         const userExits = await User.findOne({email});
         // console.log(userExits);
-
         if(!userExits){
             return res.status(400).json({ message: "Invalid user name. "});
         }
-
         const user = await userExits.comparePassword(password);
-
         if(user){
             return res.status(201).json({ message: "Login sucessful", token: await userExits.generateToken(),userId: userExits._id.toString(), });
         }else{
@@ -68,9 +59,6 @@ const user =async(req,res) =>{
         const UserData = req.user;
         // console.log(UserData);
         res.status(200).json({ UserData });
-
-        
-        
     } catch (error) {
         console.log(error);
     }

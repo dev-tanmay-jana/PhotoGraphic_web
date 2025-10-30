@@ -23,15 +23,15 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     isAdmin:{
-        type: String,
-        default: false,
+        type: Boolean,
+        default: false
     }
     // add more fields as needed
 });
 
 //secure the passwpord
 userSchema.pre('save', async function(){
-    console.log(this);
+    // console.log(this);
 
     const user = this;
 
