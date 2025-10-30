@@ -30,7 +30,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid custom-navbar">
           <NavLink className="navbar-brand" to="/" onClick={closeSidebar}>
-            TechVerse
+            PhotoGhaphic
           </NavLink>
           <button
             className="navbar-toggler d-lg-none"

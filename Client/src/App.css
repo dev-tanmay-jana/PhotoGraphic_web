@@ -121,6 +121,81 @@ input,textarea{
   font-size: 1.1rem;
 }
 
+/*  admin panale header container styling*/
+.admin_layout_container {
+    width: auto;
+    height: auto;
+    display: flex;
+    gap: 20px;
+    padding: 2px;
+    margin: 10px;
+    border: #0a0101 2px solid;
+    border-radius: 10px;
+}
+
+.nav-item{
+  margin: 0.3rem;
+  padding: 3px;
+}
+
+/* NavLink base styling */
+.nav a {
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  color: #0a0101;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.nav a:hover {
+  background-color: #2463f5;
+  transform: translateX(4px);
+}
+
+/* Active link styling */
+.nav a.active {
+  background-color: #0d6efd;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+}
+/* Users table styling */
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px;
+    padding: 2px;
+    border: #0a0101 2px solid;
+    border-radius: 20px;
+    /* background-color: aqua; */
+}
+.table_head{
+    padding: 10px;
+    background-color: #272626;
+    color: white;
+    margin: 4px;
+}
+.table_row,td,th{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+  .nav {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .nav li {
+    margin-bottom: 0;
+  }
+}
+
 .button{
     display: grid;
     justify-content: center;
@@ -191,7 +266,7 @@ input,textarea{
   background-image: linear-gradient(45deg, #272626, #4CAF50, #bd0b0b, #1751d9);
   background-size: 400% 400%;
   animation: gradientShift 20s linear infinite;
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text; */
   -webkit-text-fill-color: transparent;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   position: relative;

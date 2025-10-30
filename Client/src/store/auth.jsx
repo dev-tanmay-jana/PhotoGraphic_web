@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -6,33 +7,41 @@ export const AuthProvider = ({ children }) => {
   const [token, setTokenState] = useState(localStorage.getItem("token"));
   const [user , setUser] = useState("");
   const [services, setServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (token) {
+      userAuthenication();
+    }
+  }, [token]);
 
   const setToken = (key, token) => {
     localStorage.setItem(key, token);
-    //set cookie
-    cookieStore.set({ name: key, value: token });
     //set token in state
-    return setTokenState(token);
-    
+    setTokenState(token);
+    return token;
   };
-
-  const getToken = (key) => localStorage.getItem(key);
-
+//   function to check if user is logged in
   const isLoggedIn = () => !!token;
-
+  const getToken = (key) => localStorage.getItem(key);
+//  function to logout user
   const logoutuser = (key) => {
-  setTokenState("");
+    setTokenState("");
     localStorage.removeItem("token");
-    cookieStore.delete("token");
+    setUser("");
+    setIsLoading(false);
 };
+
+const AuthorizationToken =  `Bearer ${getToken("token")}`;
 
 //authentication getting loggedin user data from backend
 const userAuthenication = async () => {
    try {
+    setIsLoading(true);
     const response = await fetch("http://localhost:8000/user",{
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${getToken("token")}`,
+            "Authorization": AuthorizationToken,
         }
     });
 
@@ -40,10 +49,16 @@ const userAuthenication = async () => {
         const data = await response.json();
         // console.log("User data:", data.UserData);
         setUser(data.UserData);
+        setIsLoading(false);
+    }else{
+        setIsLoading(false);
+        toast.error("Failed to authenticate user");
     }
     
    } catch (error) {
     console.error("Error fetching user data:", error);
+    setIsLoading(false);
+    toast.error("Error authenticating user: " + error.message);
    } 
 };
 
@@ -55,7 +70,7 @@ const getServices = async () =>{
         });
         if(response.ok){
             const data = await response.json();
-            console.log("Services data:", data.msg);
+            // console.log("Services data:", data.msg);
             setServices(data.msg);
         }
     } catch (error) {
@@ -65,14 +80,11 @@ const getServices = async () =>{
 
 useEffect(() => {
     getServices();
-    if (token) {
-        userAuthenication();
-    }
 }, []);
 
 
   return (
-    <AuthContext.Provider value={{ setToken, isLoggedIn, getToken, logoutuser,user,services }}>
+    <AuthContext.Provider value={{ setToken, isLoggedIn, getToken, logoutuser,user,services,AuthorizationToken, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

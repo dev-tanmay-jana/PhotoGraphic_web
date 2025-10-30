@@ -11,6 +11,11 @@ import Error from './pages/Error.jsx';
 import Logout from './pages/Logout.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+// App.jsx
+import AdminLayout from './components/layouts/AdminLayout.jsx';
+import { AdminUsers } from './pages/AdminUsers.jsx';
+import { AdminContacts } from './pages/AdminContacts.jsx';
+import { AdminUpdate } from './pages/AdminUpdate.jsx';
 
 import './App.css';
 
@@ -28,6 +33,12 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
             <Route path='*' element={<Error />} />
+            <Route path='/admin' element={<AdminLayout />} >
+            {/* Admin specific routes can be added here */}
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="contacts" element={<AdminContacts />} />
+                <Route path="users/update/:id" element={<AdminUpdate />} />
+            </Route>
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {useAuth} from "../store/auth.jsx";
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [user, setUser] = useState({
@@ -20,7 +21,7 @@ const Signup = () => {
         // console.log(name, value); 
     }
 
-    const handleSumbit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // alert("form submitted");
         // console.log(user);
@@ -38,8 +39,11 @@ const Signup = () => {
                     password: user.password
                 })
             });
+
+            const data = await respond.json();
+            // console.log("respond data",data.msg);
             if(respond.status === 201){
-                const data = await respond.json();
+                // const data = await respond.json();
                 // console.log("respond data",data);
 
                 // set token in local storage
@@ -53,14 +57,18 @@ const Signup = () => {
                     phone: "", 
                     password: ""
                 });
+                toast.success("Registration successful!");
                 navigate("/service");
             }
-
+            else{
+                toast.error(Array.isArray(data.message) ? data.message[0].message : data.message);
+                // navigate("/signup");
+            }
             // console.log(respond);
         } catch (error) {
-            // console.log("register",error);
-            alert("User already exists");
-            navigate("/signup");
+            console.log("register",error);
+            toast.error("invalid details");
+            // navigate("/signup");
         }
 
     };
@@ -74,7 +82,7 @@ const Signup = () => {
                             <img src="/signuppage.jpg" alt="signup" className="pic" />
                         </div>
                         <div className="form">
-                            <form onSubmit={handleSumbit} method="POST" className="singup_form" id="register-form">
+                            <form onSubmit={handleSubmit} method="POST" className="singup_form" id="register-form">
                                 <h2 className="signupname">Sign Up</h2>
                                 <div className="form_group" htmlFor="username">
                                     <label htmlFor="username">

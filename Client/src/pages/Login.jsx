@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {useAuth} from "../store/auth.jsx";
-
+import { toast } from 'react-toastify';
 
 const login = () => {
     const [user, setUser] = useState({ 
@@ -33,9 +33,10 @@ const login = () => {
                     password: user.password
                 })
             });
+            const data = await respond.json();
+            // console.log("respond data",data);
             if(respond.status === 201){
-                 const data = await respond.json();
-                // console.log("respond data",data);
+                 
 
                 // set token in local storage
                 setToken("token", data.token);
@@ -46,12 +47,17 @@ const login = () => {
                     email: "",
                     password: ""
                 });
+                toast.success("Registration successful!");
                 navigate("/service");
+            }
+            else{
+                toast.error(Array.isArray(data.message) ? data.message[0].message : data.message);
+                // navigate("/signup");
             }
             // console.log(respond);
         } catch (error) {
             // console.log("login",error);
-            alert("Invalid details");
+            toast.error("Invalid details");
             navigate("/login");
         }
     };

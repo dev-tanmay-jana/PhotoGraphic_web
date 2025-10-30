@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../store/auth";
+import { toast } from "react-toastify";
 
 const defaultContact = {
   name: "",
@@ -13,11 +14,11 @@ const Contact = () => {
 
   // Prefill form with user data
   useEffect(() => {
-    if (user) {
+    if (user && typeof user === 'object') {
       setContact({
         name: user.username || "",
         email: user.email || "",
-        message: "",
+        message: contact.message || ""
       });
     }
   }, [user]);
@@ -29,7 +30,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting contact:", contact);
+    // console.log("Submitting contact:", contact);
 
     try {
       const response = await fetch("http://localhost:8000/contact", {
@@ -40,14 +41,16 @@ const Contact = () => {
         body: JSON.stringify(contact),
       });
 
-      if (response.status === 201) {
+      const data = await response.json();
+      
+      if (response.ok) {
         setContact(defaultContact);
-        alert("Message sent successfully");
+        toast.success("Message sent successfully");
       } else {
-        alert("Failed to send message");
+        toast.error(data.message || "Failed to send message");
       }
     } catch (error) {
-      console.error("Error submitting contact form:", error);
+        toast.error("Error submitting contact form: " + error.message);
     }
   };
 
