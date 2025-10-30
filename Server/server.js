@@ -32,9 +32,16 @@ app.use("/", auth_router, contact_router, service_router);
 app.use("/admin", admin_router);
 
 app.use(errormiddlewere);
-
-connectDb().then( () =>{
-    app.listen(port, ()=>{
-        console.log(`server started at: http://localhost:${port}`);
-    });
-});
+const isconnected = require("mongoose").connection.readyState;
+if(isconnected){
+    console.log("Already connected to mongo db");       
+}else{
+    connectDb();
+        // .then( () =>{
+        //     app.listen(port, ()=>{
+        //         console.log(`server started at: http://localhost:${port}`);
+        //     });
+        // });
+}
+//start server
+module.exports = app;
