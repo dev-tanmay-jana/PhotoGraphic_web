@@ -5,11 +5,11 @@ import { useAuth } from "../store/auth";
 export const AdminUsers = () => {
     const [users, setUsers] = useState([]);
 
-    const { AuthorizationToken } = useAuth();
+    const { AuthorizationToken,API } = useAuth();
 
     const getAllUsersData = async () => {
         try {
-            const response = await fetch("http://localhost:8000/admin/users", {
+            const response = await fetch(`${API}/admin/users`, {
                 method: "GET",
                 headers: {
                     "Authorization": AuthorizationToken,

@@ -10,7 +10,7 @@ const defaultContact = {
 
 const Contact = () => {
   const [contact, setContact] = useState(defaultContact);
-  const { user } = useAuth();
+  const { user,API } = useAuth();
 
   // Prefill form with user data
   useEffect(() => {
@@ -33,7 +33,7 @@ const Contact = () => {
     // console.log("Submitting contact:", contact);
 
     try {
-      const response = await fetch("http://localhost:8000/contact", {
+      const response = await fetch(`${API}/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

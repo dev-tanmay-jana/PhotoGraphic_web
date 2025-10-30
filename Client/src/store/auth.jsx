@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+const API = import.meta.env.BACKEND_API || "http://localhost:8000";
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -38,7 +40,7 @@ const AuthorizationToken =  `Bearer ${getToken("token")}`;
 const userAuthenication = async () => {
    try {
     setIsLoading(true);
-    const response = await fetch("http://localhost:8000/user",{
+    const response = await fetch(`${API}/user`,{
         method: "GET",
         headers: {
             "Authorization": AuthorizationToken,
@@ -65,7 +67,7 @@ const userAuthenication = async () => {
 //fetch services from backend
 const getServices = async () =>{
     try {
-        const response = await fetch("http://localhost:8000/service",{
+        const response = await fetch(`${API}/service`,{
             method: "GET",
         });
         if(response.ok){
@@ -84,7 +86,7 @@ useEffect(() => {
 
 
   return (
-    <AuthContext.Provider value={{ setToken, isLoggedIn, getToken, logoutuser,user,services,AuthorizationToken, isLoading }}>
+    <AuthContext.Provider value={{ setToken, isLoggedIn, getToken, logoutuser,user,services,AuthorizationToken, isLoading, API }}>
       {children}
     </AuthContext.Provider>
   );

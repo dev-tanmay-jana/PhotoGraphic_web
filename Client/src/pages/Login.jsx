@@ -9,7 +9,7 @@ const login = () => {
         password: ""
     });
     const navigate = useNavigate();
-    const {setToken} = useAuth();
+    const {setToken,API} = useAuth();
 
     const handleinput = (e) => {
         let name = e.target.name;
@@ -23,7 +23,7 @@ const login = () => {
         // alert("form submitted");
         // console.log(user);
         try {
-            const respond = await fetch("http://localhost:8000/login", {
+            const respond = await fetch(`${API}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

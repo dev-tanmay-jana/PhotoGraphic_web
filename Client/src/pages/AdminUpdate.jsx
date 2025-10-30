@@ -4,7 +4,7 @@ import { useAuth } from '../store/auth';
 import { toast } from 'react-toastify';
 
 export const AdminUpdate = () => {
-    const { AuthorizationToken } = useAuth();
+    const { AuthorizationToken,API } = useAuth();
 
   const [data, setData] = useState({
     name: "",
@@ -19,7 +19,7 @@ export const AdminUpdate = () => {
     const getUserData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:8000/admin/users/${params.id}`, {
+                const response = await fetch(`${API}/admin/users/${params.id}`, {
                     method: "GET",
                     headers: {
                         Authorization: AuthorizationToken,
